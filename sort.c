@@ -49,8 +49,8 @@ void mergeSort(int pData[], int l, int r)
 		int n2 = r - mid; // second sub-half
 
 		// Create two temp arrays that will merge at the end of the function call
-		int *left = Alloc(n1);
-		int *right = Alloc(n2);
+		int *left = (int *)Alloc(n1 *sizeof(int));
+		int *right = (int *)Alloc(n2 *sizeof(int));
 
 		// Recursively call the mergeSort function
 		mergeSort(pData, l, mid);
