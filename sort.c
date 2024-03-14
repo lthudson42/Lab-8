@@ -37,10 +37,9 @@ size_t Size(void* ptr)
 void mergeSort(int pData[], int l, int r)
 {
 	//If the length of the array is 0 or 1, it is already sorted
-	/*
 	if(l == r || pData == NULL)
 		printf("Already sorted.\n");
-	*/
+	
 	
 	if(l < r){
 		// Declare variables
