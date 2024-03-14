@@ -1,3 +1,8 @@
+/*
+Liam Hudson
+COP3502
+March 14, 2024
+*/
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -31,6 +36,68 @@ size_t Size(void* ptr)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
 {
+	//If the length of the array is 0 or 1, it is already sorted
+	/*
+	if(l == r || pData == NULL)
+		printf("Already sorted.\n");
+	*/
+	
+	if(l < r){
+		// Declare variables
+		int i, j, k;
+		int mid = (l+r)/2;
+		int n1 = mid - l + 1; // first sub-half
+		int n2 = r - mid; // second sub-half
+
+		// Create two temp arrays that will merge at the end of the function call
+		int *left = Alloc(n1);
+		int *right = Alloc(n2);
+
+		// Recursively call the mergeSort function
+		mergeSort(pData, l, mid);
+		mergeSort(pData, mid, r);
+
+		// Copy the values from pData into each temp array
+		for(i = 0; i < n1; i++)
+			left[i] = pData[l+i];
+		for(j = 0; j < n2; j++)
+			right[j] = pData[r+j];
+
+		// Re-initialize the index values to 0 (the beginning of the arrays)
+		i = 0;
+		j = 0;
+		k = l;
+		// Sort the sub-halfs and merge them into pData array
+		while(i < n1 && j < n2){
+			if(left[i] <= right[j]){
+				pData[k] = left[i];
+				i++;
+			}
+			else{
+				pData[k] = right[j];
+				j++;
+			}
+			k++;
+		}
+
+		// Place any remaining values in left temp array into pData
+		while(i < n1){
+			pData[k] = left[i];
+			i++;
+			k++;
+		}
+
+		// Place any remaining values in right temp array into pData
+		while(j < n2){
+			pData[k] = right[j];
+			j++;
+			k++;
+		}
+
+		// Free the memory of the temp arrays
+		DeAlloc(left);
+		DeAlloc(right);
+	}
 }
 
 // parses input file to an integer array
@@ -67,19 +134,20 @@ int parseData(char *inputFileName, int **ppData)
 // prints first and last 100 items in the data array
 void printArray(int pData[], int dataSz)
 {
-	int i, sz = dataSz - 100;
-	printf("\tData:\n\t");
-	for (i=0;i<100;++i)
-	{
-		printf("%d ",pData[i]);
-	}
-	printf("\n\t");
-	
-	for (i=sz;i<dataSz;++i)
-	{
-		printf("%d ",pData[i]);
-	}
-	printf("\n\n");
+    int i, sz = (dataSz > 100 ? dataSz - 100 : 0);
+    int firstHundred = (dataSz < 100 ? dataSz : 100);
+    printf("\tData:\n\t");
+    for (i=0;i<firstHundred;++i)
+    {
+        printf("%d ",pData[i]);
+    }
+    printf("\n\t");
+    
+    for (i=sz;i<dataSz;++i)
+    {
+        printf("%d ",pData[i]);
+    }
+    printf("\n\n");
 }
 
 int main(void)
